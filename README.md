@@ -36,6 +36,11 @@ Supported services:
   * [Website](https://minimalanalytics.com)
   * [Gist](https://gist.github.com/DavidKuennen/443121e692175d6fc145e1efb0284ec9)
   * script.js · 1.56 KB · 🥈
+* [x] ![Microsoft Clarity Logo](docs/clarity.webp) Microsoft Clarity
+  * [Website](https://clarity.microsoft.com)
+  * [Live Demo](https://clarity.microsoft.com/demo)
+  * [GitHub](https://github.com/microsoft/clarity)
+  * script.js · 3.2 KB
   
 ## Installation
 
@@ -63,4 +68,5 @@ import { Fathom } from 'astro-analytics';
 <Amplitude apiKey="<YOUR API KEY>" />
 <Matomo id="1" src="https://yourdomain.com" />
 <MinimalAnalytics id="UA-156492295-1" />
+<Clarity id="YOUR_CLARITY_PROJECT_ID" />
 ```

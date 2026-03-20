@@ -7,6 +7,7 @@ import SimpleAnalytics from "./src/SimpleAnalytics.astro";
 import Umami from "./src/Umami.astro";
 import Amplitude from "./src/Amplitude.astro";
 import MinimalAnalytics from "./src/MinimalAnalytics.astro";
+import Clarity from "./src/Clarity.astro";
 
 export {
   Fathom,
@@ -18,4 +19,5 @@ export {
   Amplitude,
   Matomo,
   MinimalAnalytics,
+  Clarity,
 };

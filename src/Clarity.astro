@@ -1,0 +1,12 @@
+---
+export interface Props {
+  id: string;
+}
+
+const { id } = Astro.props;
+---
+
+<script>
+  window.clarity && window.clarity("set", "projectId", id);
+</script>
+<script async src={`https://www.clarity.ms/tag/${id}`}></script>
