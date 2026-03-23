@@ -1,10 +1,15 @@
 ---
+/**
+ * @deprecated MinimalAnalytics depends on the deprecated Universal Analytics collect endpoint.
+ * Prefer `GoogleAnalytics` or another actively maintained provider for new Astro projects.
+ */
 export interface Props {
   id: string;
 }
 
 const { id } = Astro.props;
 ---
+
 
 <script define:vars={{id}} defer>
     (function(a,b,c){var d=a.history,e=document,f=navigator||{},g=localStorage,

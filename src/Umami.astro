@@ -1,10 +1,33 @@
 ---
 export interface Props {
-  site: string;
-  dataId: string;
-  host: string;
+  id?: string;
+  src?: string;
+  dataId?: string;
+  site?: string;
+  host?: string;
+  dataHostUrl?: string;
+  domains?: string | string[];
 }
 
-const { dataId, site, host = '/umami.js' } = Astro.props;
+const {
+  id,
+  src,
+  dataId,
+  site,
+  host = '/umami.js',
+  dataHostUrl,
+  domains,
+} = Astro.props;
+
+const websiteId = id ?? dataId;
+const scriptSrc = src ?? (site ? new URL(host, site).href : undefined);
+const normalizedDomains = Array.isArray(domains) ? domains.join(',') : domains;
 ---
-<script defer src={site}{host} data-website-id={dataId}></script>
+<script
+  async
+  defer
+  src={scriptSrc}
+  data-website-id={websiteId}
+  data-host-url={dataHostUrl}
+  data-domains={normalizedDomains}
+></script>

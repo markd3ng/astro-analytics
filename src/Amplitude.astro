@@ -1,13 +1,48 @@
 ---
 export interface Props {
-  apiKey: string
+  apiKey: string;
+  src?: string;
+  serverZone?: 'US' | 'EU';
+  autocapture?: boolean;
+  fetchRemoteConfig?: boolean;
 }
 
-const { apiKey } = Astro.props;
+const {
+  apiKey,
+  src,
+  serverZone = 'US',
+  autocapture = true,
+  fetchRemoteConfig = true,
+} = Astro.props;
 
+const scriptSrc = src ?? (serverZone === 'EU'
+  ? `https://cdn.eu.amplitude.com/script/${apiKey}.js`
+  : `https://cdn.amplitude.com/script/${apiKey}.js`);
+
+const options = {
+  autocapture,
+  fetchRemoteConfig,
+  ...(serverZone === 'EU' ? { serverZone: 'EU' as const } : {}),
+};
 ---
-<script>
-!function(){"use strict";!function(e,t){var r=e.amplitude||{_q:[],_iq:[]};if(r.invoked)e.console&&console.error&&console.error("Amplitude snippet has been loaded.");else{r.invoked=!0;var n=t.createElement("script");n.type="text/javascript",n.integrity="sha384-KhsNZzlMl/yE+u/MowsLKm9jvghmBxiXW8aKvciqaaMaeHrm5uGeQluaVkpD9C7I",n.crossOrigin="anonymous",n.async=!0,n.src="https://cdn.amplitude.com/libs/analytics-browser-1.5.1-min.js.gz",n.onload=function(){e.amplitude.runQueuedFunctions||console.log("[Amplitude] Error: could not load SDK")};var s=t.getElementsByTagName("script")[0];function v(e,t){e.prototype[t]=function(){return this._q.push({name:t,args:Array.prototype.slice.call(arguments,0)}),this}}s.parentNode.insertBefore(n,s);for(var o=function(){return this._q=[],this},i=["add","append","clearAll","prepend","set","setOnce","unset","preInsert","postInsert","remove","getUserProperties"],a=0;a<i.length;a++)v(o,i[a]);r.Identify=o;for(var u=function(){return this._q=[],this},c=["getEventProperties","setProductId","setQuantity","setPrice","setRevenue","setRevenueType","setEventProperties"],l=0;l<c.length;l++)v(u,c[l]);r.Revenue=u;var p=["getDeviceId","setDeviceId","getSessionId","setSessionId","getUserId","setUserId","setOptOut","setTransport","reset"],d=["init","add","remove","track","logEvent","identify","groupIdentify","setGroup","revenue","flush"];function f(e){function t(t,r){e[t]=function(){var n={promise:new Promise((r=>{e._q.push({name:t,args:Array.prototype.slice.call(arguments,0),resolve:r})}))};if(r)return n}}for(var r=0;r<p.length;r++)t(p[r],!1);for(var n=0;n<d.length;n++)t(d[n],!0)}f(r),r.createInstance=function(){var e=r._iq.push({_q:[]})-1;return f(r._iq[e]),r._iq[e]},e.amplitude=r}}(window,document)}();
+<script define:vars={{ apiKey, scriptSrc, options }}>
+  (function (w, d, src, key, config) {
+    var script = d.createElement('script');
+    script.async = true;
+    script.src = src;
+    script.onload = function () {
+      if (w.amplitude?.init) {
+        w.amplitude.init(key, config);
+      }
+    };
 
-amplitude.init(apiKey);
+    var firstScript = d.getElementsByTagName('script')[0];
+
+    if (firstScript?.parentNode) {
+      firstScript.parentNode.insertBefore(script, firstScript);
+      return;
+    }
+
+    d.head.appendChild(script);
+  })(window, document, scriptSrc, apiKey, options);
 </script>
